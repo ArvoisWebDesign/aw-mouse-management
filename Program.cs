@@ -1,3 +1,4 @@
+using AspNetCore.SEOHelper;
 using aw_mouse_management.Contexts;
 using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +22,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Mouse/Error");
     app.UseHsts();
 }
 
@@ -32,6 +32,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseXMLSitemap(builder.Environment.ContentRootPath);
 
 app.MapControllerRoute(
     name: "default",

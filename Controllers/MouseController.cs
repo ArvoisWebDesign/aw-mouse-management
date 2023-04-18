@@ -1,8 +1,10 @@
-﻿using aw_mouse_management.Contexts;
+﻿using AspNetCore.SEOHelper.Sitemap;
+using aw_mouse_management.Contexts;
 using aw_mouse_management.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Xml;
 
 namespace aw_mouse_management.Controllers
 {
@@ -17,6 +19,9 @@ namespace aw_mouse_management.Controllers
             _logger = logger;
             _context = context;
         }
+
+
+
 
         public IActionResult Index()
         {

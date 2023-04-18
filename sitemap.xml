@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://aw-mouse-management.azurewebsites.net</loc>
+    <lastmod>2023-04-18T22:34:40+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aw-mouse-management.azurewebsites.net/Mouse/MouseManagement</loc>
+    <lastmod>2023-04-18T22:34:40+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aw-mouse-management.azurewebsites.net/Mouse/FormAddMouse</loc>
+    <lastmod>2023-04-18T22:34:40+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

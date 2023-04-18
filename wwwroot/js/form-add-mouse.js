@@ -6,6 +6,7 @@
 
         addEventAutoPatternAntiSpecialCharacters(form.find(".inputName"))
         addEventAutoPatternAntiSpecialCharacters(form.find(".inputPhotoAlt"))
+        addEventAutoPatternAntiSpecialCharacters(form.find(".inputComment"))
 
         mapCheckboxToInput(form.find(".checkboxIsWireless"), form.find(".inputIsWireless"))
 

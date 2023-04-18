@@ -93,6 +93,11 @@ form {
     padding-left: 0.5rem;
 }
 
+.form-label.required::after {
+    content: " *";
+    color: #dc3545;
+}
+
 .toast-container {
     position: absolute;
     top: 3rem;

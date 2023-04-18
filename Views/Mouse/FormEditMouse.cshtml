@@ -16,11 +16,13 @@
         }
     ))
     {
+        <p><span class="text-danger">*</span> champs requis</p>
+
         <input asp-for="Mouse.Id" type="hidden" />
 
         <div class="row row-cols-1 row-cols-md-2">
             <div class="mb-4 form-group col">
-                <label asp-for="Mouse.Name" class="form-label">Name</label>
+                <label asp-for="Mouse.Name" class="form-label required">Name</label>
                 <input asp-for="Mouse.Name" class="form-control inputName" aria-label="Name" maxlength="255" value="@Model.Mouse.Name" />
                 <span asp-validation-for="Mouse.Name" class="text-danger"></span>
             </div>
@@ -29,7 +31,7 @@
             </div>
 
             <div class="mb-4 form-group col">
-                <label asp-for="Mouse.MaxDpi" class="form-label">Max dpi <span class="text-muted">(400 - 1000000)</span></label>
+                <label asp-for="Mouse.MaxDpi" class="form-label required">Max dpi <span class="text-muted">(400 - 1000000)</span></label>
                 <input asp-for="Mouse.MaxDpi" class="form-control inputMaxDpi" aria-label="MaxDpi" type="number" value="@Model.Mouse.MaxDpi" />
                 <span asp-validation-for="Mouse.MaxDpi" class="text-danger"></span>
             </div>
@@ -47,7 +49,7 @@
             </div>
 
             <div class="mb-4 form-group col">
-                <label asp-for="Mouse.IdBrand" class="form-label">Brand</label>
+                <label asp-for="Mouse.IdBrand" class="form-label required">Brand</label>
                 <select asp-for="Mouse.IdBrand" class="form-select form-control selectIdBrand" aria-label="Select a brand" required placeholder="">
                     @foreach (var Brand in Model.Brands)
                     {
@@ -64,7 +66,7 @@
             </div>
 
             <div class="mb-4 form-group col">
-                <label asp-for="Mouse.IdGrip" class="form-label">Grip</label>
+                <label asp-for="Mouse.IdGrip" class="form-label required">Grip</label>
                 <select asp-for="Mouse.IdGrip" class="form-select form-control selectIdGrip" aria-label="Select a grip" required placeholder="">
                     @foreach (var Grip in Model.Grips)
                     {
@@ -112,6 +114,8 @@
             <textarea asp-for="Mouse.Comment" class="form-control inputComment" aria-label="Comment" maxlength="255">@Model.Mouse.Comment</textarea>
             <span asp-validation-for="Mouse.Comment" class="text-danger"></span>
         </div>
+
+        <p><span class="text-danger">*</span> champs requis</p>
 
         <button class="btn btn-outline-dark" id="btnEditMouse" type="submit">Edit mouse</button>
 
