@@ -1,12 +1,18 @@
 using aw_mouse_management.Contexts;
+using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Get the azure db connection string
+var keyVaultUrl = new Uri(builder.Configuration.GetSection("KeyVaultURL").Value!);
+var azureCredential = new DefaultAzureCredential();
+builder.Configuration.AddAzureKeyVault(keyVaultUrl, azureCredential);
+var cs = builder.Configuration.GetSection("connectionstring").Value;
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<MouseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MouseContext")));
+builder.Services.AddDbContext<MouseContext>(options => options.UseSqlServer(cs));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
