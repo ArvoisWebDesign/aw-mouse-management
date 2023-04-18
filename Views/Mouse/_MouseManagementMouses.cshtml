@@ -1,0 +1,80 @@
+﻿@model List<Mouse>
+
+@if (Model != null)
+{
+    if(Model.Count == 0)
+    {
+        <div class="text-center">
+            No mouse found. Check the filters or add your own mouse!
+        </div>
+    } else
+    {
+        <div class="mousesCardsContainer">
+            @foreach (Mouse Mouse in Model)
+            {
+                <div class="mouseCard">
+                    <div class="card shadow border-0">
+                        <div class="card-header p-0 border-0">
+                            @if (Mouse.Photo != null)
+                            {
+                                <div style="background-image: url(data:image;base64,@System.Convert.ToBase64String(Mouse.Photo.PhotoAsBytes))"
+                                     class="rounded-top">
+                                    &nbsp;
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="noImageContainer">
+                                    <img src="~/images/face-frown-regular.svg" />
+                                    <span></span>
+                                    <img src="~/images/computer-mouse-solid.svg" />
+                                    <span></span>
+                                    <span class="text-center m-0">No image</span>
+                                    <span></span>
+                                    <img src="~/images/arrow-pointer-solid.svg" />
+                                    <span></span>
+                                    <img src="~/images/heart-crack-solid.svg" />
+                                </div>
+                                
+                            }
+                        </div>
+
+                        <div class="card-body">
+                            <p class="card-title fw-bolder fs-5">@Mouse.Name</p>
+
+                            @if (Mouse.Brand != null)
+                            {
+                                <p class="card-subtitle mb-2 text-muted fw-semibold">By @Mouse.Brand.Name</p>
+                            }
+
+                            <ul>
+                                <li class="card-text">Max dpi : @Mouse.MaxDpi</li>
+
+                                @if (Mouse.Grip != null)
+                                {
+                                    <li class="card-text">@Mouse.Grip.Name</li>
+                                }
+
+                                @if (Mouse.IsWireless)
+                                {
+                                    <li class="card-text">Wireless</li>
+                                }
+                                else
+                                {
+                                    <li class="card-text">Wired</li>
+                                }
+                            </ul>
+
+                            <a class="btn btn-outline-dark btnEditMouse" asp-controller="Mouse" asp-action="FormEditMouse" asp-route-id="@Mouse.Id">Edit</a>
+                            <a class="btn btn-outline-danger btnModalDeleteMouse"
+                               data-bs-toggle="modal" data-bs-target="#modalDeleteMouse"
+                               data-idmouse="@Mouse.Id" data-mousename="@Mouse.Name">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

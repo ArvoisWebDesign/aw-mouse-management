@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AW Mouse Management</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.bootstrap5.min.css" 
+            integrity="sha512-Ars0BmSwpsUJnWMw+KoUKGKunT7+T8NGK0ORRKj+HT8naZzLSIQoOSIIM3oyaJljgLxFi0xImI5oZkAWEFARSA==" 
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </head>
+
+    <body class="min-vh-100">
+        <header>
+            <nav class="navbar border-bottom p-0">
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link d-inline-block px-4 py-2" asp-area="" asp-controller="Mouse" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-inline-block px-4 py-2" asp-area="" asp-controller="Mouse" asp-action="MouseManagement">Mouse management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-inline-block px-4 py-2" asp-area="" asp-controller="Mouse" asp-action="FormAddMouse">Add mouse</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main role="main" class="p-4 h-auto">
+            @RenderBody()
+        </main>
+
+        <footer class="border-top footer container-fluid text-muted text-center p-4">
+            <div class="row">
+                <div class="col">
+                    <div class="fw-bold">By Arvois Webdesign</div>
+                    <div>This website is a "Proof of competence"</div>
+                    <div>Use the database responsibly</div>
+                    <div>
+                        <a href="https://github.com/ArvoisWebDesign" target="_blank">
+                            Open source code
+                        </a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="fw-bold">Tech stack</div>
+                    <div>ASP.NET Core 7 (MVC)</div>
+                    <div>Bootstrap 5.2.3</div>
+                    <div>JQuery 3.6</div>
+                </div>
+            </div>
+        </footer>
+        
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+            integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/mouse-management.js" asp-append-version="true"></script>
+        <script src="~/js/form-add-mouse.js" asp-append-version="true"></script>
+        <script src="~/js/form-edit-mouse.js" asp-append-version="true"></script>
+    
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

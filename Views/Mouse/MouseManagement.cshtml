@@ -1,0 +1,110 @@
+﻿@model MouseManagement
+
+<div id="mouseManagementContainer">
+    <div class="container-fluid">
+        <h1 class="mb-4">Mouse management</h1>
+
+        <div class="row">
+            <div class="col-xl-2 col-lg-3 col-md-12 mb-4">
+                @await Html.PartialAsync("_MouseManagementFilters", Model.Filters)
+            </div>
+            <div class="col-xl-10 col-lg-9 col-md-12" id="mouseManagementMousesContainer">
+                @await Html.PartialAsync("_MouseManagementMouses", Model.Mouses)
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container">
+        @if(Model.ResponseFormMouse != null)
+        {
+            @*Response returned when adding/editing a mouse*@
+            var classFormMouseIsError = "";
+            if (Model.ResponseFormMouse.IsError == true)
+            {
+                classFormMouseIsError = "text-bg-danger";
+            }
+            else
+            {
+                classFormMouseIsError = "text-bg-success";
+            }
+            <div class="toast align-items-center @classFormMouseIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouse">
+                <div class="d-flex">
+                    <div class="toast-body">@Model.ResponseFormMouse.Message</div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+
+            @*Response returned when adding a mouse photo*@
+            if(Model.ResponseFormMouse.HadPhotoToAdd == true && Model.ResponseFormMouse.ResponseAddMousePhoto != null)
+            {
+                var classAddMousePhotoIsError = "";
+                if (Model.ResponseFormMouse.ResponseAddMousePhoto.IsError == true)
+                {
+                    classAddMousePhotoIsError = "text-bg-danger";
+                } else
+                {
+                    classAddMousePhotoIsError = "text-bg-success";
+                }
+                <div class="toast align-items-center @classAddMousePhotoIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouseAddPhoto">
+                    <div class="d-flex">
+                        <div class="toast-body">@Model.ResponseFormMouse.ResponseAddMousePhoto.Message</div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+
+            @*Response returned when deleting a mouse photo*@
+            if (Model.ResponseFormMouse.HadPhotoToDelete == true && Model.ResponseFormMouse.ResponseDeleteMousePhoto != null)
+            {
+                var classDeleteMousePhotoIsError = "";
+                if (Model.ResponseFormMouse.ResponseDeleteMousePhoto.IsError == true)
+                {
+                    classDeleteMousePhotoIsError = "text-bg-danger";
+                }
+                else
+                {
+                    classDeleteMousePhotoIsError = "text-bg-success";
+                }
+                <div class="toast align-items-center @classDeleteMousePhotoIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouseDeletePhoto">
+                    <div class="d-flex">
+                        <div class="toast-body">@Model.ResponseFormMouse.ResponseDeleteMousePhoto.Message</div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+        }
+
+        @*Response returned when deleting a mouse*@
+        <div class="toast align-items-center fade hide" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseDeleteMouse">
+            <div class="d-flex">
+                <div class="toast-body"></div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center fade hide" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseDeleteMousePhoto">
+            <div class="d-flex">
+                <div class="toast-body"></div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    @*Confirmation modal to delete mouse*@
+    <div class="modal fade" id="modalDeleteMouse" tabindex="-1" role="dialog" aria-labelledby="titleModalDeleteMouse" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-bg-danger">
+                    <h1 class="modal-title fs-5" id="titleModalDeleteMouse">Delete mouse : <span class="mouseNameToDelete"></span></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="bodyModalDeleteMouse">
+                    <p>Are you sure you want to delete the mouse <span class="mouseNameToDelete"></span> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" id="btnDeleteMouse" data-idmouse="">Delete mouse</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

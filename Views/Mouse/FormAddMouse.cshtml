@@ -1,0 +1,128 @@
+﻿@model MouseManagementForm
+
+<div id="formAddMouseContainer" class="container">
+    <h1 class="mb-4">Add a new mouse</h1>
+
+    @using (Html.BeginForm(
+        "FormAddMouse",
+        "Mouse",
+        null,
+        FormMethod.Post,
+        true,
+        new
+        {
+           @class = "mb-4",
+           @id = "formAddMouse"
+        }
+    ))
+    {
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.Name" class="form-label">Name</label>
+                <input asp-for="Mouse.Name" class="form-control inputName" aria-label="Name" maxlength="255" />
+                <span asp-validation-for="Mouse.Name" class="text-danger"></span>
+            </div>
+
+            <div class="col">
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.MaxDpi" class="form-label">Max dpi</label>
+                <input asp-for="Mouse.MaxDpi" class="form-control inputMaxDpi" aria-label="MaxDpi" type="number" />
+                <span asp-validation-for="Mouse.MaxDpi" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4 mt-auto checkboxContainer form-group col">
+                <input class="form-check-input checkboxIsWireless" type="checkbox" value="">
+                <input asp-for="Mouse.IsWireless" class="inputIsWireless" type="hidden" value="false" />
+                <label asp-for="Mouse.IsWireless" class="form-check-label mb-2">Wireless</label>
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.IdBrand" class="form-label">Brand</label>
+                <select asp-for="Mouse.IdBrand" class="form-select form-control selectIdBrand" aria-label="Select a brand" required placeholder="">
+                    @foreach (var Brand in Model.Brands)
+                    {
+                        <option value="@Brand.Id">@Brand.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Mouse.IdBrand" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.IdGrip" class="form-label">Grip</label>
+                <select asp-for="Mouse.IdGrip" class="form-select form-control selectIdGrip" aria-label="Select a grip" required placeholder="">
+                    @foreach (var Grip in Model.Grips)
+                    {
+                        <option value="@Grip.Id">@Grip.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Mouse.IdGrip" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="PhotoAsString" class="form-label">Photo <span class="text-muted">(1MB max)</span></label>
+                <input class="form-control inputPhoto" type="file" accept=".png,.jpg,.jpeg">
+                <input asp-for="PhotoAsString" class="form-control inputPhotoAsString" aria-label="PhotoAsString" type="hidden" />
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="PhotoAlt" class="form-label">Photo description or name <span class="text-muted">(for accessibility)</span></label>
+                <input asp-for="PhotoAlt" class="form-control inputPhotoAlt" aria-label="PhotoAlt" maxlength="255" />
+                <span asp-validation-for="PhotoAlt" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-4 form-group">
+            <label asp-for="Mouse.Comment" class="form-label">Comment</label>
+            <textarea asp-for="Mouse.Comment" class="form-control inputComment" aria-label="Comment" maxlength="255"></textarea>
+            <span asp-validation-for="Mouse.Comment" class="text-danger"></span>
+        </div>
+
+        <button class="btn btn-outline-dark" id="btnAddMouse" type="submit">Add mouse</button>
+
+        <a class="btn btn-outline-danger" asp-area="" asp-controller="Mouse" asp-action="MouseManagement">Cancel</a>
+    }
+
+    <div class="toast-container">
+        @if (Model.ResponseFormMouse != null)
+        {
+            @*Response returned when adding a mouse*@
+            var classFormMouseIsError = "";
+            if (Model.ResponseFormMouse.IsError == true)
+            {
+                classFormMouseIsError = "text-bg-danger";
+            }
+            else
+            {
+                classFormMouseIsError = "text-bg-success";
+            }
+            <div class="toast align-items-center @classFormMouseIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouse">
+                <div class="d-flex">
+                    <div class="toast-body">@Model.ResponseFormMouse.Message</div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+
+            @*Response returned when adding a mouse photo*@
+            if (Model.ResponseFormMouse.HadPhotoToAdd == true && Model.ResponseFormMouse.ResponseAddMousePhoto != null)
+            {
+                var classAddMousePhotoIsError = "";
+                if (Model.ResponseFormMouse.ResponseAddMousePhoto.IsError == true)
+                {
+                    classAddMousePhotoIsError = "text-bg-danger";
+                }
+                else
+                {
+                    classAddMousePhotoIsError = "text-bg-success";
+                }
+                <div class="toast align-items-center @classAddMousePhotoIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouseAddPhoto">
+                    <div class="d-flex">
+                        <div class="toast-body">@Model.ResponseFormMouse.ResponseAddMousePhoto.Message</div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

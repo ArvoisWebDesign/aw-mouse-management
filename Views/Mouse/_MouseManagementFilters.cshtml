@@ -1,0 +1,66 @@
+﻿@model MouseManagementFilters
+
+@using(Html.BeginForm(
+    "FilterMouses", 
+    "Mouse", 
+    null, 
+    FormMethod.Post, 
+    true, 
+    new {
+        @class = "mb-4",
+        @id = "formMouseManagementFilters"
+    }
+)) {
+    <div class="mb-4 form-group">
+        <label asp-for="Search" class="form-label">Search</label>
+        <input asp-for="Search" class="form-control inputSearch" aria-label="Search" />
+    </div>
+
+    <div class="mb-4 form-group">
+        <label asp-for="SelectedIdsOfBrand" class="form-label">Brands</label>
+        <select asp-for="SelectedIdsOfBrand" class="form-select form-control selectSelectedIdsOfBrand" aria-label="Select brand(s)" multiple>
+            @foreach (var Brand in Model.Brands)
+            {
+                <option value="@Brand.Id">@Brand.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-4 form-group">
+        <label asp-for="SelectedIdsOfGrip" class="form-label">Grips</label>
+        <select asp-for="SelectedIdsOfGrip" class="form-select form-control selectSelectedIdsOfGrip" aria-label="Select grip(s)" multiple>
+            @foreach(var Grip in Model.Grips)
+            {
+                <option value="@Grip.Id">@Grip.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-4">
+        <div class="form-check">
+            <input class="form-check-input checkboxDisplayWireless" type="checkbox" value="" checked>
+            <label asp-for="DisplayWireless" class="form-check-label">
+                Display wireless mouses
+            </label>
+            <input asp-for="DisplayWireless" class="inputDisplayWireless" type="hidden" value="true" />
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <div class="form-check">
+            <input class="form-check-input checkboxDisplayWired" type="checkbox" value="" checked>
+            <label asp-for="DisplayWired" class="form-check-label">
+                Display wired mouses
+            </label>
+            <input asp-for="DisplayWired" class="inputDisplayWired" type="hidden" value="true" />
+        </div>
+    </div>
+
+    <div class="mb-4">
+        @*Dummy button to loose the focus on input fields*@
+        @*The actual filtering is auto triggered when one of the fields change*@
+        @*But if you write something in an input the change event is only triggered when you loose the focus*@
+        @*This dummy button solve this problem! Woooo we love real time filtering!*@
+        <button class="btn btn-outline-dark" type="button">Apply filters</button>
+    </div>
+}

@@ -1,0 +1,182 @@
+﻿@model MouseManagementForm
+
+<div id="formEditMouseContainer" class="container">
+    <h1 class="mb-4">Edit mouse : <span class="text-muted">@Model.Mouse.Name</span></h1>
+
+    @using (Html.BeginForm(
+        "FormEditMouse",
+        "Mouse",
+        null,
+        FormMethod.Post,
+        true,
+        new
+        {
+           @class = "mb-4",
+           @id = "formEditMouse"
+        }
+    ))
+    {
+        <input asp-for="Mouse.Id" type="hidden" />
+
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.Name" class="form-label">Name</label>
+                <input asp-for="Mouse.Name" class="form-control inputName" aria-label="Name" maxlength="255" value="@Model.Mouse.Name" />
+                <span asp-validation-for="Mouse.Name" class="text-danger"></span>
+            </div>
+
+            <div class="col">
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.MaxDpi" class="form-label">Max dpi <span class="text-muted">(400 - 1000000)</span></label>
+                <input asp-for="Mouse.MaxDpi" class="form-control inputMaxDpi" aria-label="MaxDpi" type="number" value="@Model.Mouse.MaxDpi" />
+                <span asp-validation-for="Mouse.MaxDpi" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4 mt-auto checkboxContainer form-group col">
+                @if(Model.Mouse.IsWireless == true)
+                {
+                    <input class="form-check-input checkboxIsWireless" type="checkbox" value="" checked>
+                } else
+                {
+                    <input class="form-check-input checkboxIsWireless" type="checkbox" value="">
+                }
+                <input asp-for="Mouse.IsWireless" class="inputIsWireless" type="hidden" value="@Model.Mouse.IsWireless" />
+                <label asp-for="Mouse.IsWireless" class="form-check-label mb-2">Wireless</label>
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.IdBrand" class="form-label">Brand</label>
+                <select asp-for="Mouse.IdBrand" class="form-select form-control selectIdBrand" aria-label="Select a brand" required placeholder="">
+                    @foreach (var Brand in Model.Brands)
+                    {
+                        if(Model.Mouse.IdBrand == Brand.Id)
+                        {
+                            <option value="@Brand.Id" selected>@Brand.Name</option>
+                        } else
+                        {
+                            <option value="@Brand.Id">@Brand.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Mouse.IdBrand" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4 form-group col">
+                <label asp-for="Mouse.IdGrip" class="form-label">Grip</label>
+                <select asp-for="Mouse.IdGrip" class="form-select form-control selectIdGrip" aria-label="Select a grip" required placeholder="">
+                    @foreach (var Grip in Model.Grips)
+                    {
+                        if (Model.Mouse.IdGrip == Grip.Id)
+                        {
+                            <option value="@Grip.Id" selected>@Grip.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@Grip.Id">@Grip.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Mouse.IdGrip" class="text-danger"></span>
+            </div>
+
+            @if(Model.Mouse.Photo != null && Model.Mouse.IdPhoto != null)
+            {
+                <div class="mb-4 form-group col">
+                    <p class="mb-2">Old photo</p>
+                    <div>
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Mouse.Photo.PhotoAsBytes)" alt="@Model.Mouse.Photo.Alt" class="w-100 rounded" />
+                    </div>
+                    <input asp-for="Mouse.IdPhoto" type="hidden" />
+                </div>
+            }
+
+            <div class="mb-4 col">
+                <div class="mb-4 form-group">
+                    <label asp-for="PhotoAsString" class="form-label">New photo <span class="text-muted">(1MB max)</span></label>
+                    <input class="form-control inputPhoto" type="file" accept=".png,.jpg,.jpeg">
+                    <input asp-for="PhotoAsString" class="form-control inputPhotoAsString" aria-label="PhotoAsString" type="hidden" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PhotoAlt" class="form-label">New photo description or name <span class="text-muted">(for accessibility)</span></label>
+                    <input asp-for="PhotoAlt" class="form-control inputPhotoAlt" aria-label="PhotoAlt" maxlength="255" />
+                    <span asp-validation-for="PhotoAlt" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4 form-group">
+            <label asp-for="Mouse.Comment" class="form-label">Comment</label>
+            <textarea asp-for="Mouse.Comment" class="form-control inputComment" aria-label="Comment" maxlength="255">@Model.Mouse.Comment</textarea>
+            <span asp-validation-for="Mouse.Comment" class="text-danger"></span>
+        </div>
+
+        <button class="btn btn-outline-dark" id="btnEditMouse" type="submit">Edit mouse</button>
+
+        <a class="btn btn-outline-danger" asp-area="" asp-controller="Mouse" asp-action="MouseManagement">Cancel</a>
+    }
+
+    <div class="toast-container">
+        @if (Model.ResponseFormMouse != null)
+        {
+            @*Response returned when editing a mouse*@
+            var classFormMouseIsError = "";
+            if (Model.ResponseFormMouse.IsError == true)
+            {
+                classFormMouseIsError = "text-bg-danger";
+            }
+            else
+            {
+                classFormMouseIsError = "text-bg-success";
+            }
+            <div class="toast align-items-center @classFormMouseIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouse">
+                <div class="d-flex">
+                    <div class="toast-body">@Model.ResponseFormMouse.Message</div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+
+            @*Response returned when adding a mouse photo*@
+            if (Model.ResponseFormMouse.HadPhotoToAdd == true && Model.ResponseFormMouse.ResponseAddMousePhoto != null)
+            {
+                var classAddMousePhotoIsError = "";
+                if (Model.ResponseFormMouse.ResponseAddMousePhoto.IsError == true)
+                {
+                    classAddMousePhotoIsError = "text-bg-danger";
+                }
+                else
+                {
+                    classAddMousePhotoIsError = "text-bg-success";
+                }
+                <div class="toast align-items-center @classAddMousePhotoIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouseAddPhoto">
+                    <div class="d-flex">
+                        <div class="toast-body">@Model.ResponseFormMouse.ResponseAddMousePhoto.Message</div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+
+            @*Response returned when deleting a mouse photo*@
+            if (Model.ResponseFormMouse.HadPhotoToDelete == true && Model.ResponseFormMouse.ResponseDeleteMousePhoto != null)
+            {
+                var classDeleteMousePhotoIsError = "";
+                if (Model.ResponseFormMouse.ResponseDeleteMousePhoto.IsError == true)
+                {
+                    classDeleteMousePhotoIsError = "text-bg-danger";
+                }
+                else
+                {
+                    classDeleteMousePhotoIsError = "text-bg-success";
+                }
+                <div class="toast align-items-center @classDeleteMousePhotoIsError" role="alert" aria-live="assertive" aria-atomic="true" id="toastResponseFormMouseDeletePhoto">
+                    <div class="d-flex">
+                        <div class="toast-body">@Model.ResponseFormMouse.ResponseDeleteMousePhoto.Message</div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
