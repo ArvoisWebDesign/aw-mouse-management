@@ -56,7 +56,8 @@
                         if(Model.Mouse.IdBrand == Brand.Id)
                         {
                             <option value="@Brand.Id" selected>@Brand.Name</option>
-                        } else
+                        } 
+                        else
                         {
                             <option value="@Brand.Id">@Brand.Name</option>
                         }
@@ -87,10 +88,24 @@
             {
                 <div class="mb-4 form-group col">
                     <p class="mb-2">Old photo</p>
-                    <div>
-                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Mouse.Photo.PhotoAsBytes)" alt="@Model.Mouse.Photo.Alt" class="w-100 rounded" />
+                    <div id="mousePhotoContainer">
+                        <button class="btn btn-outline-danger mb-4" type="button" id="btnDeleteOldPhoto">
+                            Delete
+                        </button>
+
+                        <span class="text-danger mb-4" style="display: none;" id="alertOldPhotoWillBeDeleted">
+                            Old photo will be deleted
+                            &nbsp;
+                            <button class="btn btn-outline-dark" type="button" id="btnCancelDeleteOldPhoto">
+                                Cancel
+                            </button>
+                        </span>
+
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Mouse.Photo.PhotoAsBytes)"
+                             alt="@Model.Mouse.Photo.Alt" class="w-100 rounded" id="currentMousePhoto" />
                     </div>
                     <input asp-for="Mouse.IdPhoto" type="hidden" />
+                    <input asp-for="DeleteOldPhoto" type="hidden" class="inputDeleteOldPhoto" value="@Model.DeleteOldPhoto" />
                 </div>
             }
 

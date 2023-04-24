@@ -14,6 +14,7 @@ namespace aw_mouse_management.Models
         [StringLength(255), RegularExpression(@"^[a-zA-Z0-9.\-\s]+$")]
         public string? PhotoAlt { get; set; } = string.Empty;
         public string? PhotoAsString { get; set; } = string.Empty;
+        public bool DeleteOldPhoto { get; set; }
 
         public ResponseFormMouse? ResponseFormMouse { get; set; }
     }

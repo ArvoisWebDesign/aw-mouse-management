@@ -122,6 +122,8 @@ namespace aw_mouse_management.Controllers
                 }
                 else
                 {
+                    formAddMouse.Brands = await GetBrands().ConfigureAwait(false);
+                    formAddMouse.Grips = await GetGrips().ConfigureAwait(false);
                     formAddMouse.ResponseFormMouse = new ResponseFormMouse()
                     {
                         IsError = true,
@@ -132,6 +134,8 @@ namespace aw_mouse_management.Controllers
                 }
             } else
             {
+                formAddMouse.Brands = await GetBrands().ConfigureAwait(false);
+                formAddMouse.Grips = await GetGrips().ConfigureAwait(false);
                 formAddMouse.ResponseFormMouse = new ResponseFormMouse()
                 {
                     IsError = true,
@@ -205,7 +209,12 @@ namespace aw_mouse_management.Controllers
                             formEditMouse.Mouse.IdPhoto = tuple.IdPhotoAdded;
                         }
                     } else
+                    {
                         response.HadPhotoToAdd = false;
+
+                        if (formEditMouse.DeleteOldPhoto == true && formEditMouse.Mouse.IdPhoto != null)
+                            idPhotoToDelete = formEditMouse.Mouse.IdPhoto.Value;
+                    }
 
                     _context.Mouses.Update(formEditMouse.Mouse);
                     await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -227,6 +236,10 @@ namespace aw_mouse_management.Controllers
                 }
                 else
                 {
+                    formEditMouse.Brands = await GetBrands().ConfigureAwait(false);
+                    formEditMouse.Grips = await GetGrips().ConfigureAwait(false);
+                    if(formEditMouse.Mouse.IdPhoto != null)
+                        formEditMouse.Mouse.Photo = await GetPhotoById(formEditMouse.Mouse.IdPhoto.Value).ConfigureAwait(false);
                     formEditMouse.ResponseFormMouse = new ResponseFormMouse()
                     {
                         IsError = true,
@@ -239,6 +252,10 @@ namespace aw_mouse_management.Controllers
             }
             else
             {
+                formEditMouse.Brands = await GetBrands().ConfigureAwait(false);
+                formEditMouse.Grips = await GetGrips().ConfigureAwait(false);
+                if (formEditMouse.Mouse.IdPhoto != null)
+                    formEditMouse.Mouse.Photo = await GetPhotoById(formEditMouse.Mouse.IdPhoto.Value).ConfigureAwait(false);
                 formEditMouse.ResponseFormMouse = new ResponseFormMouse()
                 {
                     IsError = true,
@@ -433,6 +450,23 @@ namespace aw_mouse_management.Controllers
             // https://stackoverflow.com/questions/9431519/is-it-possible-to-reduce-the-size-of-an-image-comes-from-byte-array
 
             return mouse;
+        }
+        
+        private async Task<Photo> GetPhotoById(int idPhoto)
+        {
+            var photo = new Photo();
+
+            var photoDb = await _context.Photos.Where(p => p.Id == idPhoto)
+                                                .FirstOrDefaultAsync()
+                                                .ConfigureAwait(false);
+
+            if (photoDb != null)
+                photo = photoDb;
+
+            // insert method to compress the photo before returning it
+            // https://stackoverflow.com/questions/9431519/is-it-possible-to-reduce-the-size-of-an-image-comes-from-byte-array
+
+            return photo;
         }
 
         private async Task<List<Brand>> GetBrands()

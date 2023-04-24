@@ -21,7 +21,7 @@
         <div class="row row-cols-1 row-cols-md-2">
             <div class="mb-4 form-group col">
                 <label asp-for="Mouse.Name" class="form-label required">Name</label>
-                <input asp-for="Mouse.Name" class="form-control inputName" aria-label="Name" maxlength="255" />
+                <input asp-for="Mouse.Name" class="form-control inputName" aria-label="Name" maxlength="255" value="@Model.Mouse.Name" />
                 <span asp-validation-for="Mouse.Name" class="text-danger"></span>
             </div>
 
@@ -30,13 +30,20 @@
 
             <div class="mb-4 form-group col">
                 <label asp-for="Mouse.MaxDpi" class="form-label required">Max dpi <span class="text-muted">(400 - 1000000)</span></label>
-                <input asp-for="Mouse.MaxDpi" class="form-control inputMaxDpi" aria-label="MaxDpi" type="number" />
+                <input asp-for="Mouse.MaxDpi" class="form-control inputMaxDpi" aria-label="MaxDpi" type="number" value="@Model.Mouse.MaxDpi" />
                 <span asp-validation-for="Mouse.MaxDpi" class="text-danger"></span>
             </div>
 
             <div class="mb-4 mt-auto checkboxContainer form-group col">
-                <input class="form-check-input checkboxIsWireless" type="checkbox" value="">
-                <input asp-for="Mouse.IsWireless" class="inputIsWireless" type="hidden" value="false" />
+                @if (Model.Mouse.IsWireless == true)
+                {
+                    <input class="form-check-input checkboxIsWireless" type="checkbox" value="" checked>
+                }
+                else
+                {
+                    <input class="form-check-input checkboxIsWireless" type="checkbox" value="">
+                }
+                <input asp-for="Mouse.IsWireless" class="inputIsWireless" type="hidden" value="@Model.Mouse.IsWireless" />
                 <label asp-for="Mouse.IsWireless" class="form-check-label mb-2">Wireless</label>
             </div>
 
@@ -45,7 +52,14 @@
                 <select asp-for="Mouse.IdBrand" class="form-select form-control selectIdBrand" aria-label="Select a brand" required placeholder="">
                     @foreach (var Brand in Model.Brands)
                     {
-                        <option value="@Brand.Id">@Brand.Name</option>
+                        if (Model.Mouse.IdBrand == Brand.Id)
+                        {
+                            <option value="@Brand.Id" selected>@Brand.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@Brand.Id">@Brand.Name</option>
+                        }
                     }
                 </select>
                 <span asp-validation-for="Mouse.IdBrand" class="text-danger"></span>
@@ -56,7 +70,14 @@
                 <select asp-for="Mouse.IdGrip" class="form-select form-control selectIdGrip" aria-label="Select a grip" required placeholder="">
                     @foreach (var Grip in Model.Grips)
                     {
-                        <option value="@Grip.Id">@Grip.Name</option>
+                        if (Model.Mouse.IdGrip == Grip.Id)
+                        {
+                            <option value="@Grip.Id" selected>@Grip.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@Grip.Id">@Grip.Name</option>
+                        }
                     }
                 </select>
                 <span asp-validation-for="Mouse.IdGrip" class="text-danger"></span>
@@ -77,7 +98,7 @@
 
         <div class="mb-4 form-group">
             <label asp-for="Mouse.Comment" class="form-label">Comment</label>
-            <textarea asp-for="Mouse.Comment" class="form-control inputComment" aria-label="Comment" maxlength="255"></textarea>
+            <textarea asp-for="Mouse.Comment" class="form-control inputComment" aria-label="Comment" maxlength="255">@Model.Mouse.Comment</textarea>
             <span asp-validation-for="Mouse.Comment" class="text-danger"></span>
         </div>
 
